@@ -43,8 +43,8 @@ server = function(input, output) {
       boat_rating = data[data$Yacht == input$yacht, rating]
       data = data[order(-rating)]
       data[, Course := x]
-      data[, `Time On Course` := (rating / boat_rating * input$time) - input$time]
-      data[, `60 min` := (rating / boat_rating * 60) - 60]
+      data[, `After Time On Course` := (boat_rating / rating * input$time) - input$time]
+      data[, `After 60 min` := (boat_rating / rating * 60) - 60]
       data[, rating := NULL]
       if (length(owed_times_dt) == 0) {
         owed_times_dt <<- data
@@ -54,13 +54,13 @@ server = function(input, output) {
         owed_times_dt <<- rbind(owed_times_dt, data)
       }
     })
-    owed_times_dt$`90 min` = owed_times_dt$`60 min` * 1.5
-    owed_times_dt$`120 min` = owed_times_dt$`60 min` * 2
+    owed_times_dt$`After 90 min` = owed_times_dt$`After 60 min` * 1.5
+    owed_times_dt$`After 120 min` = owed_times_dt$`After 60 min` * 2
 
-    owed_times_dt$`Time On Course` = paste0(owed_times_dt$`Time On Course` -(owed_times_dt$`Time On Course`%%sign(owed_times_dt$`Time On Course`)) ," min ", round(owed_times_dt$`Time On Course`%%sign(owed_times_dt$`Time On Course`)*60,0), " sec")
-    owed_times_dt$`60 min` = paste0(owed_times_dt$`60 min` -(owed_times_dt$`60 min`%%sign(owed_times_dt$`60 min`)) ," min ", round(owed_times_dt$`60 min`%%sign(owed_times_dt$`60 min`)*60,0), " sec")
-    owed_times_dt$`90 min` = paste0(owed_times_dt$`90 min` -(owed_times_dt$`90 min`%%sign(owed_times_dt$`90 min`)) ," min ", round(owed_times_dt$`90 min`%%sign(owed_times_dt$`90 min`)*60,0), " sec")
-    owed_times_dt$`120 min` = paste0(owed_times_dt$`120 min` -(owed_times_dt$`120 min`%%sign(owed_times_dt$`120 min`)) ," min ", round(owed_times_dt$`120 min`%%sign(owed_times_dt$`120 min`)*60,0), " sec")
+    owed_times_dt$`After Time On Course` = paste0(owed_times_dt$`After Time On Course` -(owed_times_dt$`After Time On Course`%%sign(owed_times_dt$`After Time On Course`)) ," min ", round(owed_times_dt$`After Time On Course`%%sign(owed_times_dt$`After Time On Course`)*60,0), " sec")
+    owed_times_dt$`After 60 min` = paste0(owed_times_dt$`After 60 min` -(owed_times_dt$`After 60 min`%%sign(owed_times_dt$`After 60 min`)) ," min ", round(owed_times_dt$`After 60 min`%%sign(owed_times_dt$`After 60 min`)*60,0), " sec")
+    owed_times_dt$`After 90 min` = paste0(owed_times_dt$`After 90 min` -(owed_times_dt$`After 90 min`%%sign(owed_times_dt$`After 90 min`)) ," min ", round(owed_times_dt$`After 90 min`%%sign(owed_times_dt$`After 90 min`)*60,0), " sec")
+    owed_times_dt$`After 120 min` = paste0(owed_times_dt$`After 120 min` -(owed_times_dt$`After 120 min`%%sign(owed_times_dt$`After 120 min`)) ," min ", round(owed_times_dt$`After 120 min`%%sign(owed_times_dt$`After 120 min`)*60,0), " sec")
     owed_times_dt[`Yacht Name`== input$yacht, names(owed_times_dt)[c(-1,-2)] := "--------------" ]
     owed_times_dt
   }
