@@ -8,12 +8,6 @@ orc_ratings = setDT(read.table("orc_ratings.csv", header = TRUE, sep = ",", chec
 ui = fluidPage(
   titlePanel("ORC Ratings"),
   fluidRow(
-    column(8,
-           checkboxGroupInput("course", label = h3("Course Types"), 
-                              choices = names(orc_ratings)[-1],
-                              inline = TRUE,
-                              selected = names(orc_ratings)[2])
-    ),
     column(2,
            selectInput("yacht",
                        h4("Yacht Name"),
@@ -21,6 +15,12 @@ ui = fluidPage(
     ),
     column(2,
            numericInput("time", label = h4("Time On Course"), value = 60)
+    ),
+    column(8,
+           checkboxGroupInput("course", label = h4("Course Types"), 
+                              choices = names(orc_ratings)[-1],
+                              inline = TRUE,
+                              selected = names(orc_ratings)[2])
     )
   ),
   # Create a new row for the table.
